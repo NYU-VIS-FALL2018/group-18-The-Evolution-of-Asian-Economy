@@ -1,7 +1,7 @@
 # Project Name
-**Authors**: Jhon Doe (jd2545), Mark Smith (ms4568)
+**Authors**: Haotian Shen (hs2685), Karan Bhatia (kb3053), Gaurav Wadhawan (gw979)
 
-Group X (Online: Group Y) 
+Group 18 
 
 ![Screenhot](screenshot.jpg)
 
