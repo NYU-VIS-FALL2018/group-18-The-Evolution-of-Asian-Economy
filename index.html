@@ -1,5 +1,70 @@
 <html>
 <head>
+    <style>
+        h1 {
+            background-color: #2a5599;
+            color: white;
+            padding: 5px;
+        }
+
+        svg {
+            border: solid 1px black;
+            background-color: white;
+        }
+
+        .sticky {
+            position: fixed;
+            top: 0;
+            width: 100%;
+        }
+
+            .sticky + .content {
+                padding-top: 102px;
+            }
+
+        .line_india {
+            fill: none;
+            stroke: orange;
+        }
+
+        .line_china {
+            fill: none;
+            stroke: blue;
+        }
+
+        .line_japan {
+            fill: none;
+            stroke: red;
+        }
+
+        .country-name {
+            margin: 0 !important;
+        }
+
+        .key-dot {
+            display: inline-block;
+            height: 10px;
+            margin-right: .5em;
+            width: 10px;
+        }
+
+        .legend1 {
+            text-align: center;
+        }
+
+
+        .india {
+            background: orange;
+        }
+
+        .china {
+            background: blue;
+        }
+
+        .japan {
+            background: red;
+        }
+    </style>
     <title>The Evolution of Asian Economy</title>
     <script src="https://d3js.org/d3.v5.min.js"></script>
 </head>
@@ -11,16 +76,235 @@
     <p>
         First, we start off by taking a look at some of the major countries and see how their economy have been doing over the past few decades.
     </p>
+    <div id="GDP">
+        <h2> Q1 GDP of major countries </h2>
+        <svg id="container1" height="450" width="700">
+            <g id="body" transform="translate(150,150)"></g>
+            <div class="legend1">
+                <p class="country-name">
+                    <span class="key-dot india"></span>India <span class="key-dot china"></span>China
+                    <span class="key-dot japan"></span>Japan
+                </p>
+            </div>
+
+        </svg>
+    </div>
+    <div class="content">
+        <h2> Q3 % of GDP on Research and Development</h2>
+        <svg id="container3" height="450" width="700">
+            <g id="body3" transform="translate(150,150)"></g>
+            <div class="legend1">
+                <p class="country-name">
+                    <span class="key-dot india"></span>India <span class="key-dot china"></span>China
+                    <span class="key-dot japan"></span>Japan
+                </p>
+            </div>
+        </svg>
+
+        <h2> Q5 Focus on Healthcare </h2>
+        <svg id="container5" height="450" width="700">
+            <g id="body5" transform="translate(150,150)"></g>
+            <div class="legend1">
+                <p class="country-name">
+                    <span class="key-dot india"></span>India <span class="key-dot china"></span>China
+                    <span class="key-dot japan"></span>Japan
+                </p>
+            </div>
+
+        </svg>
+    </div>
 </body>
 <script>
-    function loadData() {
+    /*// code to make a section stick to the top of the page when scrolling, will be fined-tuned and implemented later
+    window.onscroll = function () { myFunction() };
 
+    var header = document.getElementById("GDP");
+    var sticky = header.offsetTop;
+
+    function myFunction() {
+        if (window.pageYOffset > sticky) {
+            header.classList.add("sticky");
+        } else {
+            header.classList.remove("sticky");
+        }
+    }*/
+
+    // d3 part
+    let body = d3.select('#body')
+    d3.csv("ques1_v2.csv").then(showData)
+    function showData(data) {
+        let bodyHeight = 250
+        let bodyWidth = 500
+
+        let maxValue_china = d3.max(data, d => d.China)
+        let maxValue_india = d3.max(data, d => d.India)
+        let maxValue_japan = d3.max(data, d => d.Japan)
+
+        let maxValue = Math.max(maxValue_china, maxValue_india, maxValue_japan)
+        let yScale = d3.scaleLinear()
+            .range([bodyHeight, 0])
+            .domain([0, 12237700000000]);
+        let xScale = d3.scaleLinear()
+            .domain(d3.extent(data, d => d.Year))
+            .range([0, bodyWidth])
+
+        console.log(xScale);
+        body.append("g")
+            .call(d3.axisLeft(yScale))
+            .append("text")
+            .text("value")
+            .attr("fill", "black")
+            .attr("transform", `rotate(270,${0},${110})`)
+
+        body.append("g")
+            .attr("transform", "translate(0," + bodyHeight + ")")
+            .call(d3.axisBottom(xScale))
+            .append("text")
+            .text("Year")
+            .attr("fill", "black")
+            .attr("dx", bodyWidth / 2)
+            .attr("dy", 50)
+
+        valueline_india = d3.line()
+            .x(d => xScale(d.Year))
+            .y(d => yScale(d.India))
+        body.append("path")
+            .datum(data)
+            .attr("d", d => valueline_india(d))
+            .attr("class", "line_india")
+        valueline_china = d3.line()
+            .x(d => xScale(d.Year))
+            .y(d => yScale(d.China))
+        body.append("path")
+            .datum(data)
+            .attr("d", d => valueline_china(d))
+            .attr("class", "line_china")
+        valueline_japan = d3.line()
+            .x(d => xScale(d.Year))
+            .y(d => yScale(d.Japan))
+        body.append("path")
+            .datum(data)
+            .attr("d", d => valueline_japan(d))
+            .attr("class", "line_japan")
     }
 
-    function showData() {
 
+
+
+    let body3 = d3.select('#body3')
+    d3.csv("ques_3.csv").then(showData3)
+    function showData3(data) {
+        let bodyHeight = 250
+        let bodyWidth = 500
+
+        let maxValue_china = d3.max(data, d => d.China)
+        let maxValue_india = d3.max(data, d => d.India)
+        let maxValue_japan = d3.max(data, d => d.Japan)
+
+        let maxValue = Math.max(maxValue_china, maxValue_india, maxValue_japan)
+        let yScale = d3.scaleLinear()
+            .range([bodyHeight, 0])
+            .domain([0, maxValue]);
+        let xScale = d3.scaleLinear()
+            .domain(d3.extent(data, d => d.Year))
+            .range([0, bodyWidth])
+
+        console.log(xScale);
+        body3.append("g")
+            .call(d3.axisLeft(yScale))
+            .append("text")
+            .text("value")
+            .attr("fill", "black")
+            .attr("transform", `rotate(270,${0},${110})`)
+
+        body3.append("g")
+            .attr("transform", "translate(0," + bodyHeight + ")")
+            .call(d3.axisBottom(xScale))
+            .append("text")
+            .text("Year")
+            .attr("fill", "black")
+            .attr("dx", bodyWidth / 2)
+            .attr("dy", 50)
+
+        valueline_india = d3.line()
+            .x(d => xScale(d.Year))
+            .y(d => yScale(d.India))
+        body3.append("path")
+            .datum(data)
+            .attr("d", d => valueline_india(d))
+            .attr("class", "line_india")
+        valueline_china = d3.line()
+            .x(d => xScale(d.Year))
+            .y(d => yScale(d.China))
+        body3.append("path")
+            .datum(data)
+            .attr("d", d => valueline_china(d))
+            .attr("class", "line_china")
+        valueline_japan = d3.line()
+            .x(d => xScale(d.Year))
+            .y(d => yScale(d.Japan))
+        body3.append("path")
+            .datum(data)
+            .attr("d", d => valueline_japan(d))
+            .attr("class", "line_japan")
     }
 
-    loadData().then(showData);
+    let body5 = d3.select('#body5')
+    d3.csv("ques5.csv").then(showData1)
+    function showData1(data) {
+        let bodyHeight = 250
+        let bodyWidth = 500
+
+        let maxValue_china = d3.max(data, d => d.China)
+        let maxValue_india = d3.max(data, d => d.India)
+        let maxValue_japan = d3.max(data, d => d.Japan)
+
+        let maxValue = Math.max(maxValue_china, maxValue_india, maxValue_japan)
+        let yScale = d3.scaleLinear()
+            .range([bodyHeight, 0])
+            .domain([0, maxValue]);
+        let xScale = d3.scaleLinear()
+            .domain(d3.extent(data, d => d.Year))
+            .range([0, bodyWidth])
+
+        console.log(xScale);
+        body5.append("g")
+            .call(d3.axisLeft(yScale))
+            .append("text")
+            .text("value")
+            .attr("fill", "black")
+            .attr("transform", `rotate(270,${0},${110})`)
+
+        body5.append("g")
+            .attr("transform", "translate(0," + bodyHeight + ")")
+            .call(d3.axisBottom(xScale))
+            .append("text")
+            .text("Year")
+            .attr("fill", "black")
+            .attr("dx", bodyWidth / 2)
+            .attr("dy", 50)
+
+        valueline_india = d3.line()
+            .x(d => xScale(d.Year))
+            .y(d => yScale(d.India))
+        body5.append("path")
+            .datum(data)
+            .attr("d", d => valueline_india(d))
+            .attr("class", "line_india")
+        valueline_china = d3.line()
+            .x(d => xScale(d.Year))
+            .y(d => yScale(d.China))
+        body5.append("path")
+            .datum(data)
+            .attr("d", d => valueline_china(d))
+            .attr("class", "line_china")
+        valueline_japan = d3.line()
+            .x(d => xScale(d.Year))
+            .y(d => yScale(d.Japan))
+        body5.append("path")
+            .datum(data)
+            .attr("d", d => valueline_japan(d))
+            .attr("class", "line_japan")
+    }
 </script>
 </html>
