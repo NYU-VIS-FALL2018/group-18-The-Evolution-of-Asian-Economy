@@ -10,6 +10,6 @@ Group 18
 In this project, we are taking a look at the Asian economy. We will be focusing on some of the major countries in that region. We have some hypothesis on what changes there are over the past few decades and what might be the causes, and we will use data to validate our hypothesis. Overall, this will help us to gain a better understanding of the evolution the economy of that region.
 
 ## More
-[DEMO](https://nyu-vis-fall2018.github.io/storytelling-group-18/)
+[DEMO](https://nyu-vis-fall2018.github.io/project-template/)
 
 [Project Description](project.pdf)
