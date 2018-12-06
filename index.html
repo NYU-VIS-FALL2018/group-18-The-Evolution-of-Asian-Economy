@@ -7,7 +7,7 @@
             text-align: center;
         }
 
-        p {
+        p, h3 {
             margin-left: 750px;
         }
 
@@ -20,21 +20,26 @@
             float: left;
         }
 
-        .clearfix::after {
-            content: "";
-            clear: both;
-            display: table;
+        .clearfix {
+            padding-bottom: 15px;
+            background-color: #F0F0E1;
         }
+
+            .clearfix::after {
+                content: "";
+                clear: both;
+                display: table;
+            }
 
         .sticky {
             position: fixed;
             width: 99%;
             top: -10px;
-            background-color: white;
+            background-color: #F0F0E1;
         }
 
         .nonsticky {
-            margin-top: 550px;
+            margin-top: 490px;
         }
 
         .line_india {
@@ -83,7 +88,7 @@
     </style>
     <title>The Evolution of Asian Economy</title>
 </head>
-<body>
+<body style="background-color:#F0F0E1">
 
     <div class="clearfix" id="GDP">
         <h1>The Evolution of Asian Economy</h1>
@@ -97,43 +102,69 @@
                 </p>
             </div>
         </svg>
-        <p>
+        <h3>
             In this project, we are taking a look at the Asian economy. We will be focusing on some of the major countries in that region. We have some hypothesis on what changes there are over the past few decades and what might be the causes, and we will use data to validate our hypothesis. Overall, this will help us to gain a better understanding of the evolution the economy of that region.
-        </p>
-        <p>
+        </h3>
+        <h3>
             First, we start off by taking a look at some of the major countries and see how their economy have been doing over the past few decades.
-        </p>
+        </h3>
     </div>
     <div id="rest">
-        <h2> Q3: % of GDP on Research and Development</h2>
-        <svg id="container3" height="330" width="700">
-            <g id="body3" transform="translate(150,20)"></g>
-            <div class="legend1">
-                <p class="country-name">
-                    <span class="key-dot india"></span>India <span class="key-dot china"></span>China
-                    <span class="key-dot japan"></span>Japan
-                </p>
-            </div>
-        </svg>
+        <div class="clearfix" id="Q2">
+            <h2> Q2:</h2>
+            <svg id="container3" height="330" width="700" class="column">
+                
+            </svg>
+            <h3>
+                Description
+            </h3>
+        </div>
+        <div class="clearfix" id="Q3">
+            <h2> Q3: % of GDP on Research and Development</h2>
+            <svg id="container3" height="330" width="700" class="column">
+                <g id="body3" transform="translate(150,20)"></g>
+                <div class="legend1">
+                    <p class="country-name">
+                        <span class="key-dot india"></span>India <span class="key-dot china"></span>China
+                        <span class="key-dot japan"></span>Japan
+                    </p>
+                </div>
+            </svg>
+            <h3>
+                Description
+            </h3>
+        </div>
+        <div class="clearfix" id="Q4">
+            <h2> Q4:</h2>
+            <svg id="container3" height="330" width="700" class="column">
 
-        <h2> Q5: Focus on Healthcare </h2>
-        <svg id="container5" height="330" width="700">
-            <g id="body5" transform="translate(150,20)"></g>
-            <div class="legend1">
-                <p class="country-name">
-                    <span class="key-dot india"></span>India <span class="key-dot china"></span>China
-                    <span class="key-dot japan"></span>Japan
-                </p>
-            </div>
-
-        </svg>
-    </div>
+            </svg>
+            <h3>
+                Description
+            </h3>
+        </div>
+        <div class="clearfix" id="Q5">
+            <h2> Q5: Focus on Healthcare </h2>
+            <svg id="container5" height="330" width="700" class="column">
+                <g id="body5" transform="translate(150,20)"></g>
+                <div class="legend1">
+                    <p class="country-name">
+                        <span class="key-dot india"></span>India <span class="key-dot china"></span>China
+                        <span class="key-dot japan"></span>Japan
+                    </p>
+                </div>
+            </svg>
+            <h3>
+                Description
+            </h3>
+        </div>
 </body>
 <script>
-    // code to make a section stick to the top of the page when scrolling, will be fined-tuned and implemented later
+    // code to make a section stick to the top of the page when scrolling
     window.onscroll = function () { myFunction() };
     var header = document.getElementById("GDP");
     var sticky = header.offsetTop;
+
     function myFunction() {
         if (window.pageYOffset > sticky) {
             header.classList.add("sticky");
@@ -142,6 +173,11 @@
             header.classList.remove("sticky");
             document.getElementById("rest").classList.remove("nonsticky");
         }
+
+        // snaps to Q5 when scrolling, this code can potentially be used to create a scroll-snap effect
+        /*if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+            location.href = "#Q5";
+        } */
     }
 
     // d3 part
