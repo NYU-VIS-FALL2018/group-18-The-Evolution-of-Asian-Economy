@@ -1,10 +1,14 @@
 <html>
 <head>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
     <style>
         h1 {
-            background-color: #2a5599;
-            color: white;
-            padding: 5px;
+            background-color: lightgray;
+            text-align: center;
+        }
+
+        p {
+            margin-left: 750px;
         }
 
         svg {
@@ -12,15 +16,26 @@
             background-color: white;
         }
 
-        .sticky {
-            position: fixed;
-            top: 0;
-            width: 100%;
+        .column {
+            float: left;
         }
 
-            .sticky + .content {
-                padding-top: 102px;
-            }
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+        .sticky {
+            position: fixed;
+            width: 99%;
+            top: -10px;
+            background-color: white;
+        }
+
+        .nonsticky {
+            margin-top: 550px;
+        }
 
         .line_india {
             fill: none;
@@ -49,7 +64,8 @@
         }
 
         .legend1 {
-            text-align: center;
+            text-align: left;
+            margin-left: 750px;
         }
 
 
@@ -66,33 +82,32 @@
         }
     </style>
     <title>The Evolution of Asian Economy</title>
-    <script src="https://d3js.org/d3.v5.min.js"></script>
 </head>
 <body>
-    <h1>The Evolution of Asian Economy</h1>
-    <p>
-        In this project, we are taking a look at the Asian economy. We will be focusing on some of the major countries in that region. We have some hypothesis on what changes there are over the past few decades and what might be the causes, and we will use data to validate our hypothesis. Overall, this will help us to gain a better understanding of the evolution the economy of that region.
-    </p>
-    <p>
-        First, we start off by taking a look at some of the major countries and see how their economy have been doing over the past few decades.
-    </p>
-    <div id="GDP">
-        <h2> Q1 GDP of major countries </h2>
-        <svg id="container1" height="450" width="700">
-            <g id="body" transform="translate(150,150)"></g>
+
+    <div class="clearfix" id="GDP">
+        <h1>The Evolution of Asian Economy</h1>
+        <h2> Q1: GDP of major countries </h2>
+        <svg id="container1" height="330" width="700" class="column">
+            <g id="body" transform="translate(150,20)"></g>
             <div class="legend1">
                 <p class="country-name">
                     <span class="key-dot india"></span>India <span class="key-dot china"></span>China
                     <span class="key-dot japan"></span>Japan
                 </p>
             </div>
-
         </svg>
+        <p>
+            In this project, we are taking a look at the Asian economy. We will be focusing on some of the major countries in that region. We have some hypothesis on what changes there are over the past few decades and what might be the causes, and we will use data to validate our hypothesis. Overall, this will help us to gain a better understanding of the evolution the economy of that region.
+        </p>
+        <p>
+            First, we start off by taking a look at some of the major countries and see how their economy have been doing over the past few decades.
+        </p>
     </div>
-    <div class="content">
-        <h2> Q3 % of GDP on Research and Development</h2>
-        <svg id="container3" height="450" width="700">
-            <g id="body3" transform="translate(150,150)"></g>
+    <div id="rest">
+        <h2> Q3: % of GDP on Research and Development</h2>
+        <svg id="container3" height="330" width="700">
+            <g id="body3" transform="translate(150,20)"></g>
             <div class="legend1">
                 <p class="country-name">
                     <span class="key-dot india"></span>India <span class="key-dot china"></span>China
@@ -101,9 +116,9 @@
             </div>
         </svg>
 
-        <h2> Q5 Focus on Healthcare </h2>
-        <svg id="container5" height="450" width="700">
-            <g id="body5" transform="translate(150,150)"></g>
+        <h2> Q5: Focus on Healthcare </h2>
+        <svg id="container5" height="330" width="700">
+            <g id="body5" transform="translate(150,20)"></g>
             <div class="legend1">
                 <p class="country-name">
                     <span class="key-dot india"></span>India <span class="key-dot china"></span>China
@@ -115,26 +130,27 @@
     </div>
 </body>
 <script>
-    /*// code to make a section stick to the top of the page when scrolling, will be fined-tuned and implemented later
+    // code to make a section stick to the top of the page when scrolling, will be fined-tuned and implemented later
     window.onscroll = function () { myFunction() };
-
     var header = document.getElementById("GDP");
     var sticky = header.offsetTop;
-
     function myFunction() {
         if (window.pageYOffset > sticky) {
             header.classList.add("sticky");
+            document.getElementById("rest").classList.add("nonsticky");
         } else {
             header.classList.remove("sticky");
+            document.getElementById("rest").classList.remove("nonsticky");
         }
-    }*/
+    }
 
     // d3 part
     let body = d3.select('#body')
+
+    let bodyHeight = 250
+    let bodyWidth = 500
     d3.csv("ques1_v2.csv").then(showData)
     function showData(data) {
-        let bodyHeight = 250
-        let bodyWidth = 500
 
         let maxValue_china = d3.max(data, d => d.China)
         let maxValue_india = d3.max(data, d => d.India)
@@ -190,12 +206,9 @@
 
 
 
-
     let body3 = d3.select('#body3')
     d3.csv("ques_3.csv").then(showData3)
     function showData3(data) {
-        let bodyHeight = 250
-        let bodyWidth = 500
 
         let maxValue_china = d3.max(data, d => d.China)
         let maxValue_india = d3.max(data, d => d.India)
@@ -252,8 +265,6 @@
     let body5 = d3.select('#body5')
     d3.csv("ques5.csv").then(showData1)
     function showData1(data) {
-        let bodyHeight = 250
-        let bodyWidth = 500
 
         let maxValue_china = d3.max(data, d => d.China)
         let maxValue_india = d3.max(data, d => d.India)
