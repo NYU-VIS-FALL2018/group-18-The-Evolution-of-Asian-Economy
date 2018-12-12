@@ -56,6 +56,10 @@
             fill: none;
             stroke: red;
         }
+        .line_korea{
+          fill: none;
+          stroke: green;
+        }
 
         .country-name {
             margin: 0 !important;
@@ -85,11 +89,13 @@
         .japan {
             background: red;
         }
+        .korean{
+          background: green;
+        }
     </style>
     <title>The Evolution of Asian Economy</title>
 </head>
 <body style="background-color:#F0F0E1">
-
     <div class="clearfix" id="GDP">
         <h1>The Evolution of Asian Economy</h1>
         <h2> Q1: GDP of major countries </h2>
@@ -98,7 +104,7 @@
             <div class="legend1">
                 <p class="country-name">
                     <span class="key-dot india"></span>India <span class="key-dot china"></span>China
-                    <span class="key-dot japan"></span>Japan
+                    <span class="key-dot japan"></span>Japan <span class="key-dot korean"></span>Korean Republic
                 </p>
             </div>
         </svg>
@@ -112,8 +118,13 @@
     <div id="rest">
         <div class="clearfix" id="Q2">
             <h2> Q2:</h2>
-            <svg id="container3" height="330" width="700" class="column">
-                
+            <svg id="container2" height="330" width="700" class="column">
+              <g id="body2" transform="translate(150,20)"></g>
+              <div class="legend1">
+                  <p class="country-name">
+                      <span class="key-dot india"></span>Agriculture <span class="key-dot china"></span>Services
+                  </p>
+              </div>
             </svg>
             <h3>
                 Description
@@ -126,7 +137,7 @@
                 <div class="legend1">
                     <p class="country-name">
                         <span class="key-dot india"></span>India <span class="key-dot china"></span>China
-                        <span class="key-dot japan"></span>Japan
+                        <span class="key-dot japan"></span>Japan <span class="key-dot korean"></span>Korean Republic
                     </p>
                 </div>
             </svg>
@@ -136,8 +147,13 @@
         </div>
         <div class="clearfix" id="Q4">
             <h2> Q4:</h2>
-            <svg id="container3" height="330" width="700" class="column">
-
+            <svg id="container4" height="330" width="700" class="column">
+              <g id="body4" transform="translate(150,20)"></g>
+              <div class="legend1">
+                  <p class="country-name">
+                      <span class="key-dot india"></span>RnD <span class="key-dot china"></span>ForeignInvestment
+                  </p>
+              </div>
             </svg>
             <h3>
                 Description
@@ -150,7 +166,7 @@
                 <div class="legend1">
                     <p class="country-name">
                         <span class="key-dot india"></span>India <span class="key-dot china"></span>China
-                        <span class="key-dot japan"></span>Japan
+                        <span class="key-dot japan"></span>Japan <span class="key-dot korean"></span>Korean Republic
                     </p>
                 </div>
             </svg>
@@ -181,33 +197,29 @@
     }
 
     // d3 part
+    //visualization 1
     let body = d3.select('#body')
-
     let bodyHeight = 250
     let bodyWidth = 500
-    d3.csv("ques1_v2.csv").then(showData)
+    d3.csv("ques_1.csv").then(showData)
     function showData(data) {
-
         let maxValue_china = d3.max(data, d => d.China)
         let maxValue_india = d3.max(data, d => d.India)
         let maxValue_japan = d3.max(data, d => d.Japan)
-
-        let maxValue = Math.max(maxValue_china, maxValue_india, maxValue_japan)
+        let maxValue_korean_republic=d3.max(data, d => d.Korean_Republic)
+        let maxValue = Math.max(maxValue_china, maxValue_india, maxValue_japan,maxValue_korean_republic)
         let yScale = d3.scaleLinear()
             .range([bodyHeight, 0])
-            .domain([0, 12237700000000]);
+            .domain([0, 12200]);
         let xScale = d3.scaleLinear()
             .domain(d3.extent(data, d => d.Year))
             .range([0, bodyWidth])
-
-        console.log(xScale);
         body.append("g")
             .call(d3.axisLeft(yScale))
             .append("text")
-            .text("value")
+            .text("In Billion USD")
             .attr("fill", "black")
             .attr("transform", `rotate(270,${0},${110})`)
-
         body.append("g")
             .attr("transform", "translate(0," + bodyHeight + ")")
             .call(d3.axisBottom(xScale))
@@ -216,7 +228,6 @@
             .attr("fill", "black")
             .attr("dx", bodyWidth / 2)
             .attr("dy", 50)
-
         valueline_india = d3.line()
             .x(d => xScale(d.Year))
             .y(d => yScale(d.India))
@@ -238,34 +249,79 @@
             .datum(data)
             .attr("d", d => valueline_japan(d))
             .attr("class", "line_japan")
+        valueline_korean_republic = d3.line()
+                .x(d => xScale(d.Year))
+                .y(d => yScale(d.Korean_Republic))
+        body.append("path")
+                .datum(data)
+                .attr("d", d => valueline_korean_republic(d))
+                .attr("class", "line_korea")
     }
 
-
-
+//visualization 2
+let body2 = d3.select('#body2')
+d3.csv("ques_2.csv").then(showData2)
+function showData2(data) {
+    let maxValue_agri = d3.max(data, d => d.Agriculture)
+    let maxValue_service = d3.max(data, d => d.Services)
+    let maxValue = Math.max(maxValue_agri, maxValue_service)
+    let yScale = d3.scaleLinear()
+        .range([bodyHeight, 0])
+        .domain([0, maxValue]);
+    let xScale = d3.scaleLinear()
+        .domain(d3.extent(data, d => d.Year))
+        .range([0, bodyWidth])
+    body2.append("g")
+        .call(d3.axisLeft(yScale))
+        .append("text")
+        .text("value")
+        .attr("fill", "black")
+        .attr("transform", `rotate(270,${0},${110})`)
+    body2.append("g")
+        .attr("transform", "translate(0," + bodyHeight + ")")
+        .call(d3.axisBottom(xScale))
+        .append("text")
+        .text("Year")
+        .attr("fill", "black")
+        .attr("dx", bodyWidth / 2)
+        .attr("dy", 50)
+    valueline_agri = d3.line()
+        .x(d => xScale(d.Year))
+        .y(d => yScale(d.Agriculture))
+    body2.append("path")
+        .datum(data)
+        .attr("d", d => valueline_agri(d))
+        .attr("class", "line_india")
+    valueline_serv = d3.line()
+        .x(d => xScale(d.Year))
+        .y(d => yScale(d.Services))
+    body2.append("path")
+        .datum(data)
+        .attr("d", d => valueline_serv(d))
+        .attr("class", "line_china")
+}
+//visualization 3
     let body3 = d3.select('#body3')
-    d3.csv("ques_3.csv").then(showData3)
+    d3.csv("ques_3n.csv").then(showData3)
     function showData3(data) {
-
+        console.log(data)
         let maxValue_china = d3.max(data, d => d.China)
         let maxValue_india = d3.max(data, d => d.India)
         let maxValue_japan = d3.max(data, d => d.Japan)
-
-        let maxValue = Math.max(maxValue_china, maxValue_india, maxValue_japan)
+        let maxValue_korean_republic=d3.max(data, d => d.Korea)
+        let maxValue = Math.max(maxValue_china, maxValue_india, maxValue_japan,maxValue_korean_republic)
         let yScale = d3.scaleLinear()
             .range([bodyHeight, 0])
             .domain([0, maxValue]);
         let xScale = d3.scaleLinear()
             .domain(d3.extent(data, d => d.Year))
             .range([0, bodyWidth])
-
-        console.log(xScale);
         body3.append("g")
             .call(d3.axisLeft(yScale))
             .append("text")
             .text("value")
             .attr("fill", "black")
             .attr("transform", `rotate(270,${0},${110})`)
-
         body3.append("g")
             .attr("transform", "translate(0," + bodyHeight + ")")
             .call(d3.axisBottom(xScale))
@@ -274,7 +330,6 @@
             .attr("fill", "black")
             .attr("dx", bodyWidth / 2)
             .attr("dy", 50)
-
         valueline_india = d3.line()
             .x(d => xScale(d.Year))
             .y(d => yScale(d.India))
@@ -296,32 +351,77 @@
             .datum(data)
             .attr("d", d => valueline_japan(d))
             .attr("class", "line_japan")
+        valueline_korean_republic = d3.line()
+                .x(d => xScale(d.Year))
+                .y(d => yScale(d.Korea))
+        body3.append("path")
+                .datum(data)
+                .attr("d", d => valueline_korean_republic(d))
+                .attr("class", "line_korea")
     }
-
-    let body5 = d3.select('#body5')
-    d3.csv("ques5.csv").then(showData1)
-    function showData1(data) {
-
-        let maxValue_china = d3.max(data, d => d.China)
-        let maxValue_india = d3.max(data, d => d.India)
-        let maxValue_japan = d3.max(data, d => d.Japan)
-
-        let maxValue = Math.max(maxValue_china, maxValue_india, maxValue_japan)
+//visualization 4
+    let body4 = d3.select('#body4')
+    d3.csv("ques_4.csv").then(showData4)
+    function showData4(data) {
+        let maxValue_rnd = d3.max(data, d => d.RnD)
+        let maxValue_fi = d3.max(data, d => d.ForeignInvestment)
+        let maxValue = Math.max(maxValue_rnd, maxValue_fi)
         let yScale = d3.scaleLinear()
             .range([bodyHeight, 0])
             .domain([0, maxValue]);
         let xScale = d3.scaleLinear()
             .domain(d3.extent(data, d => d.Year))
             .range([0, bodyWidth])
-
-        console.log(xScale);
+        body4.append("g")
+            .call(d3.axisLeft(yScale))
+            .append("text")
+            .text("value")
+            .attr("fill", "black")
+            .attr("transform", `rotate(270,${0},${110})`)
+        body4.append("g")
+            .attr("transform", "translate(0," + bodyHeight + ")")
+            .call(d3.axisBottom(xScale))
+            .append("text")
+            .text("Year")
+            .attr("fill", "black")
+            .attr("dx", bodyWidth / 2)
+            .attr("dy", 50)
+        valueline_rnd = d3.line()
+            .x(d => xScale(d.Year))
+            .y(d => yScale(d.RnD))
+        body4.append("path")
+            .datum(data)
+            .attr("d", d => valueline_rnd(d))
+            .attr("class", "line_india")
+        valueline_fi = d3.line()
+            .x(d => xScale(d.Year))
+            .y(d => yScale(d.ForeignInvestment))
+        body4.append("path")
+            .datum(data)
+            .attr("d", d => valueline_fi(d))
+            .attr("class", "line_china")
+    }
+//visualization 5
+    let body5 = d3.select('#body5')
+    d3.csv("ques_5n.csv").then(showData1)
+    function showData1(data) {
+        let maxValue_china = d3.max(data, d => d.China)
+        let maxValue_india = d3.max(data, d => d.India)
+        let maxValue_japan = d3.max(data, d => d.Japan)
+        let maxValue_korea = d3.max(data, d => d.Korea)
+        let maxValue = Math.max(maxValue_china, maxValue_india, maxValue_japan,maxValue_korea)
+        let yScale = d3.scaleLinear()
+            .range([bodyHeight, 0])
+            .domain([0, maxValue]);
+        let xScale = d3.scaleLinear()
+            .domain(d3.extent(data, d => d.Year))
+            .range([0, bodyWidth])
         body5.append("g")
             .call(d3.axisLeft(yScale))
             .append("text")
             .text("value")
             .attr("fill", "black")
             .attr("transform", `rotate(270,${0},${110})`)
-
         body5.append("g")
             .attr("transform", "translate(0," + bodyHeight + ")")
             .call(d3.axisBottom(xScale))
@@ -330,7 +430,6 @@
             .attr("fill", "black")
             .attr("dx", bodyWidth / 2)
             .attr("dy", 50)
-
         valueline_india = d3.line()
             .x(d => xScale(d.Year))
             .y(d => yScale(d.India))
@@ -352,6 +451,13 @@
             .datum(data)
             .attr("d", d => valueline_japan(d))
             .attr("class", "line_japan")
+        valueline_korea = d3.line()
+                .x(d => xScale(d.Year))
+                .y(d => yScale(d.Korea))
+        body5.append("path")
+                .datum(data)
+                .attr("d", d => valueline_korea(d))
+                .attr("class", "line_korea")
     }
 </script>
 </html>
