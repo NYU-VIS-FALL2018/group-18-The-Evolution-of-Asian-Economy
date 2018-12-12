@@ -7,7 +7,7 @@ Group 18
 
 
 ## About
-In this project, we are taking a look at the Asian economy. We will be focusing on some of the major countries in that region. We have some hypothesis on what changes there are over the past few decades and what might be the causes, and we will use data to validate our hypothesis. Overall, this will help us to gain a better understanding of the evolution the economy of that region.
+The main goal of this project is to evaluate the progress and evolution of the Asian Economy over the last few decades by taking a look at some of the major countries in Asia. We believe that some major factors and key indicators show a strong sign of development over the past few decades and we aim to visualize such trends. 
 
 ## More
 [DEMO](https://nyu-vis-fall2018.github.io/group-18-The-Evolution-of-Asian-Economy/)
