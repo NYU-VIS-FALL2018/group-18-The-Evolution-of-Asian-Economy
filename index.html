@@ -98,7 +98,7 @@
 <body style="background-color:#F0F0E1">
     <div class="clearfix" id="GDP">
         <h1>The Evolution of Asian Economy</h1>
-        <h2> Q1: GDP of major countries </h2>
+        <h2> GDP of major countries </h2>
         <svg id="container1" height="330" width="700" class="column">
             <g id="body" transform="translate(150,20)"></g>
             <div class="legend1">
@@ -117,7 +117,7 @@
     </div>
     <div id="rest">
         <div class="clearfix" id="Q2">
-            <h2> Q2:</h2>
+            <h2> Shift of India's focus from the service sector to the agricultural sector</h2>
             <svg id="container2" height="330" width="700" class="column">
               <g id="body2" transform="translate(150,20)"></g>
               <div class="legend1">
@@ -127,11 +127,11 @@
               </div>
             </svg>
             <h3>
-                Description
+                Agriculture used to be a big contributor for India's economy. However, we believe that with the rise of other industries, there might be some changes of focus. Here to demonstrate is the shift in focus of India from Agricultural Sector towards Service Sector.
             </h3>
         </div>
         <div class="clearfix" id="Q3">
-            <h2> Q3: % of GDP on Research and Development</h2>
+            <h2> Percentage of GDP on Research and Development</h2>
             <svg id="container3" height="330" width="700" class="column">
                 <g id="body3" transform="translate(150,20)"></g>
                 <div class="legend1">
@@ -142,11 +142,11 @@
                 </div>
             </svg>
             <h3>
-                Description
+                We believe that in the past, scienfitic breakthroughs had big roles in the growth of the Western economy. Therefore, we are taking a look at how much these major countries in Asia are focusing on Research and Development, and see if similar patterns emerge.
             </h3>
         </div>
         <div class="clearfix" id="Q4">
-            <h2> Q4:</h2>
+            <h2> Scientific and Technical Development helped in attracting Foreign Investment in China? </h2>
             <svg id="container4" height="330" width="700" class="column">
               <g id="body4" transform="translate(150,20)"></g>
               <div class="legend1">
@@ -156,11 +156,11 @@
               </div>
             </svg>
             <h3>
-                Description
+                We now analyze the effect of such change in Research and Development, using China as an example.
             </h3>
         </div>
         <div class="clearfix" id="Q5">
-            <h2> Q5: Focus on Healthcare </h2>
+            <h2> Focus on Healthcare </h2>
             <svg id="container5" height="330" width="700" class="column">
                 <g id="body5" transform="translate(150,20)"></g>
                 <div class="legend1">
@@ -171,7 +171,7 @@
                 </div>
             </svg>
             <h3>
-                Description
+                Health is wealth. The growth in economy won't mean much if the well-being of the general population can't be guranteed. So let's take a look at how committed these countries are at providing health care to its people.
             </h3>
         </div>
 </body>
@@ -217,7 +217,7 @@
         body.append("g")
             .call(d3.axisLeft(yScale))
             .append("text")
-            .text("In Billion USD")
+            .text("GDP (In Billions of USD)")
             .attr("fill", "black")
             .attr("transform", `rotate(270,${0},${110})`)
         body.append("g")
@@ -261,7 +261,7 @@
 //visualization 2
 let body2 = d3.select('#body2')
 d3.csv("ques_2.csv").then(showData2)
-function showData2(data) {
+    function showData2(data) {
     let maxValue_agri = d3.max(data, d => d.Agriculture)
     let maxValue_service = d3.max(data, d => d.Services)
     let maxValue = Math.max(maxValue_agri, maxValue_service)
@@ -274,7 +274,7 @@ function showData2(data) {
     body2.append("g")
         .call(d3.axisLeft(yScale))
         .append("text")
-        .text("value")
+        .text("Percentage of GDP")
         .attr("fill", "black")
         .attr("transform", `rotate(270,${0},${110})`)
     body2.append("g")
@@ -304,7 +304,6 @@ function showData2(data) {
     let body3 = d3.select('#body3')
     d3.csv("ques_3n.csv").then(showData3)
     function showData3(data) {
-        console.log(data)
         let maxValue_china = d3.max(data, d => d.China)
         let maxValue_india = d3.max(data, d => d.India)
         let maxValue_japan = d3.max(data, d => d.Japan)
@@ -319,7 +318,7 @@ function showData2(data) {
         body3.append("g")
             .call(d3.axisLeft(yScale))
             .append("text")
-            .text("value")
+            .text("Percentage of GDP")
             .attr("fill", "black")
             .attr("transform", `rotate(270,${0},${110})`)
         body3.append("g")
@@ -363,8 +362,8 @@ function showData2(data) {
     let body4 = d3.select('#body4')
     d3.csv("ques_4.csv").then(showData4)
     function showData4(data) {
-        let maxValue_rnd = d3.max(data, d => d.RnD)
-        let maxValue_fi = d3.max(data, d => d.ForeignInvestment)
+        let maxValue_rnd = d3.max(data, d => d.RnD/100*d.GDP)
+        let maxValue_fi = d3.max(data, d => d.ForeignInvestment / 100 * d.GDP)
         let maxValue = Math.max(maxValue_rnd, maxValue_fi)
         let yScale = d3.scaleLinear()
             .range([bodyHeight, 0])
@@ -375,7 +374,7 @@ function showData2(data) {
         body4.append("g")
             .call(d3.axisLeft(yScale))
             .append("text")
-            .text("value")
+            .text("Billions of USD")
             .attr("fill", "black")
             .attr("transform", `rotate(270,${0},${110})`)
         body4.append("g")
@@ -388,14 +387,14 @@ function showData2(data) {
             .attr("dy", 50)
         valueline_rnd = d3.line()
             .x(d => xScale(d.Year))
-            .y(d => yScale(d.RnD))
+            .y(d => yScale(d.RnD / 100 * d.GDP))
         body4.append("path")
             .datum(data)
             .attr("d", d => valueline_rnd(d))
             .attr("class", "line_india")
         valueline_fi = d3.line()
             .x(d => xScale(d.Year))
-            .y(d => yScale(d.ForeignInvestment))
+            .y(d => yScale(d.ForeignInvestment / 100 * d.GDP))
         body4.append("path")
             .datum(data)
             .attr("d", d => valueline_fi(d))
@@ -409,7 +408,7 @@ function showData2(data) {
         let maxValue_india = d3.max(data, d => d.India)
         let maxValue_japan = d3.max(data, d => d.Japan)
         let maxValue_korea = d3.max(data, d => d.Korea)
-        let maxValue = Math.max(maxValue_china, maxValue_india, maxValue_japan,maxValue_korea)
+        let maxValue = Math.max(maxValue_china, maxValue_india, 10.89815618, maxValue_korea) // maxValue_japan does not get the maximum value for reasons unknown
         let yScale = d3.scaleLinear()
             .range([bodyHeight, 0])
             .domain([0, maxValue]);
@@ -419,7 +418,7 @@ function showData2(data) {
         body5.append("g")
             .call(d3.axisLeft(yScale))
             .append("text")
-            .text("value")
+            .text("Percentage of GDP")
             .attr("fill", "black")
             .attr("transform", `rotate(270,${0},${110})`)
         body5.append("g")
